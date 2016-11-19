@@ -1,7 +1,8 @@
 class Container:
-    def _init_(self, vesselName, shippingLine, containerID, billOfLanding, size,
+    def __init__(self, vesselName, shippingLine, containerID, billOfLanding, size,
                loadPort, unloadPort, isLocal, inlandPoint, arrivingTerminal,
-               arrivalTime, cutOffTime, departTime, availTime, entryMode, existMode):
+               arrivalTime, cutOffTime, departTime, availTime, entryMode, exitMode,
+               is_avaliable):
         self.vesselName = vesselName
         self.shippingLine = shippingLine
         self.containerID = containerID
@@ -17,31 +18,59 @@ class Container:
         self.departTime = departTime
         self.availTime = availTime
         self.entryMode = entryMode
-        self.existMode = existMode
+        self.existMode = exitMode
+        self.avaliable = is_avaliable
+
+class Warehouse:
+    def __init__(self, name):
+        self.name = name
+        self.capacity = 100
+        self.containers = []
+
+    def upload(self, container):
+        self.containers.append(container)
+
+    def unload(self, container):
+        self.containers.remove(container)
+
+    def show(self):
+        print("Warehouse #{} avaliability: {}/{}".format(self.name, len(self.containers), self.capacity))
 
 class Vessel:
-    def _init_(self, vessel_name, outbound, container_quantity, 
-               load_port, unload_port, islocal, inland_point, voyage_num, terminal,
+    def __init__(self, vessel_name, outbound, capacity, 
+               is_local, voyage_num,
                estimated_arrival, cutoff, estimated_departure):
         self.name = vessel_name
         self.outbound = outbound
-        self.quantity = container_quantity
-        self.load_port = load_port
-        self.unload_port = unload_port
-        self.local = islocal
-        self.inland_point = inland_point
-        slef.voyage_num = voyage_num
-        self.terminal = terminal
+        if (outbound):
+            self.load_port = "Los Angeles"
+        else:
+            self.unload_port = "Los Angeles"
+        self.local = is_local
+        self.voyage_num = voyage_num
         self.estimated_arrival = estimated_arrival
         self.cutoff = cutoff
         self.estimated_departure = estimated_departure
-        self.container = []
+        self.capacity = capacity
+        self.containers = []
 
-        def upload(current_container):
-            self.container.append(current_container)
+    def upload(self, current_container):
+        for x in current_container:
+            self.containers.append(current_container)
+        return len(current_container)
 
-    
+    def unload(self, warehouse):
+        for container in self.containers:
+            warehouse.upload(container)
 
+    def show(self):
+        print("Vessel #{} capacity: {}/{}".format(self.name, len(self.containers), self.capacity))
+
+class Port:
+    def __init__(self, name, vessel, company):
+        self.name = "Los Angeles"
+        self.vessel = vessel
+        self.company = company
 
 
 
