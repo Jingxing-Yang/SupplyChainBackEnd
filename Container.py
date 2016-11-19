@@ -1,7 +1,8 @@
 """THe class for container. It store all the information for a container"""
 class Container:
-	def _init_(self,vesselName,shippingLine,containerID,billOfLanding,size,loadPort,unloadPort,
-		isLocal,inlandPoint,arrivingTerminal,arrivalTime,cutOffTime,departTime,availTime,entryMode,existMode)
+	def _init_(self,vesselName,shippingLine,containerID,billOfLanding,size,
+			loadPort,unloadPort,isLocal,inlandPoint,arrivingTerminal,
+			arrivalTime,cutOffTime,departTime,availTime,entryMode,existMode):
 		self.vesselName = vesselName
 		self.shippingLine = shippingLine
 		self.containerID = containerID
