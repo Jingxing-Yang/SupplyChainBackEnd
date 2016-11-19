@@ -1,8 +1,7 @@
 class Container:
     def __init__(self, vesselName, shippingLine, containerID, billOfLanding, size,
-               loadPort, unloadPort, isLocal, inlandPoint, arrivingTerminal,
-               arrivalTime, cutOffTime, departTime, availTime, entryMode, exitMode,
-               is_avaliable):
+                 loadPort, unloadPort, isLocal, inlandPoint, arrivingTerminal,
+                 entryMode, exitMode, is_avaliable):
         self.vesselName = vesselName
         self.shippingLine = shippingLine
         self.containerID = containerID
@@ -13,10 +12,6 @@ class Container:
         self.isLocal = isLocal
         self.arrivingTerminal = arrivingTerminal
         self.inlandPoint = inlandPoint
-        self.arrivalTime = arrivalTime
-        self.cutOffTime = cutOffTime
-        self.departTime = departTime
-        self.availTime = availTime
         self.entryMode = entryMode
         self.existMode = exitMode
         self.avaliable = is_avaliable
@@ -55,8 +50,7 @@ class Vessel:
         self.containers = []
 
     def upload(self, current_container):
-        for x in current_container:
-            self.containers.append(current_container)
+        self.containers.append(current_container)
         return len(current_container)
 
     def unload(self, warehouse):
@@ -71,7 +65,3 @@ class Port:
         self.name = "Los Angeles"
         self.vessel = vessel
         self.company = company
-
-
-
-
