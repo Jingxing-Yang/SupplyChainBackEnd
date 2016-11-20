@@ -1,4 +1,4 @@
-from Container import *
+from Container import Container
 
 """
 class Warehouse:
@@ -42,11 +42,9 @@ class Vessel:
         self.containers.append(current_container)
         current_container.location = "vessel"
         
-    def unload(self, warehouseid):
+    def unload(self):
         for container in self.containers:
-            container.location = ("warehouse%i" %warehouseid)
-            container.inform()
-        self.containers = []
+            container.location = ("port")
 
     def show(self):
         print("Vessel #{} size: {}/{}".format(self.name, len(self.containers), self.size))

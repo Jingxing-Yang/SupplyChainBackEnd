@@ -1,4 +1,3 @@
-"""THe class for container. It store all the information for a container"""
 class Container:
     def __init__(self, vesselName, shippingLine, containerID, billOfLanding, size,
                  loadPort, unloadPort, isLocal, inlandPoint, arrivingTerminal,
@@ -17,10 +16,6 @@ class Container:
         self.existMode = exitMode
         self.avaliable = is_avaliable
         self.location = ""
-        
-    def inform(self):
-        #read the dictionary to find the number of company to contact
-        text(find(self.containerID))
         
     def show(self):
         print("Container #{} location: {}".format(self.containerID, self.location))

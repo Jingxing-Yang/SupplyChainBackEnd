@@ -1,12 +1,24 @@
 import openpyxl as pyxl
-from Container import *
-from Vessel import *
+from Port import Port
+from Vessel import Vessel
+from Container import Container
 
-"""Pass in the path and file name
-Return a list of vessels """
+from twilio.rest import TwilioRestClient
+
+ACCOUNT_SID = "AC289f7d8e9decded34363ffa03b469cb8" 
+AUTH_TOKEN = "74083a3f504a0e4f2d912be47445228e" 
+
+client = TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN)
+
+def notify(text):
+    client.messages.create(   
+        body=text,  # Message body, if any
+        to="+12132040803",
+        from_="+14159694232",)
+
 def readFile(fileName):
     wb = pyxl.load_workbook(fileName)
-    sheet = wb['Sheet1']
+    sheet = wb["cargo data"]
     vesselList = []
     for row in sheet.iter_rows(row_offset=1):
         name = row[1].value
@@ -32,10 +44,13 @@ def readFile(fileName):
             entryMode = row[19].value
             exitMode = row[20].value
 
-            newContainer = Container(name,shipppingLine,containerID,billOfLanding,containerSize,loadPort,unloadPort,isLocal,inlandPoint,arrivingTerminal,availTime,entryMode,exitMode)
+            newContainer = Container(name, shipppingLine, containerID, billOfLanding, containerSize,
+                                     loadPort, unloadPort, isLocal, inlandPoint, arrivingTerminal,
+                                     availTime, entryMode, exitMode)
             """ when list is empty, simply push a new vessel"""
             if len(vesselList) == 0:
-                newVessel = Vessel(name,outBound,isLocal,voyageNum,ariivingTime,cutOffTime,departTime)
+                newVessel = Vessel(name, outBound, isLocal, voyageNum,
+                                   ariivingTime, cutOffTime, departTime)
                 newVessel.upload(newContainer)
                 vesselList.append(newVessel)
             else:
@@ -46,18 +61,60 @@ def readFile(fileName):
                         exist = True
                         break
                 if  exist==False:
-                    newVessel = Vessel(name,outBound,isLocal,voyageNum,
-                    ariivingTime,cutOffTime,departTime)
+                    newVessel = Vessel(name, outBound, isLocal, voyageNum,
+                                       ariivingTime, cutOffTime, departTime)
                     newVessel.upload(newContainer)
                     vesselList.append(newVessel)
     return vesselList
 
+def get_container(landing_num, myList):
+    info = []
+    for myVessel in myList:
+        for myContainer in myVessel.containers:
+            if myContainer.billOfLanding == landing_num:
+                info.append(myVessel)
+                info.append(myContainer)
+                return info
+# load data
+fileName = "resources/HackathonDatapostarrival.xlsx"
+print("Loading data...")
 
-fileName = "resources/test.xlsx"
 myList = readFile(fileName)
 for myVessel in myList:
-    print(myVessel.name)
+    count = 0
     for myContainer in myVessel.containers:
-        print(myContainer.containerID)
+        temp = int(myContainer.size)
+        count += temp
+    myContainer.size = count
 
-    
+LA = Port(0, 5625, myList)
+LA.unload("Sorcerer's Stone")
+# interact with user
+correct = 1
+while (correct):
+    user_type = raw_input("Please enter your user type (Company/Port/Truck): ") 
+    if (user_type == "Company" or user_type == "Port" or user_type == "Truck"):
+        correct = 0
+    else:
+        notify("wrong: please enter again ")
+        correct = 1
+
+# notify("Hello dear #{} user: what would you like to do? ".format(user_type))
+action = raw_input("Hello dear #{} user: what would you like to do? ".format(user_type))
+if (action == "track"):
+    # notify("Please give me the Bill of Lading")
+    billOfLanding = raw_input("Please give me the Bill of Lading: ")
+    print("Fetching...")
+    myContainer = get_container(billOfLanding, myList)
+    print("Your cargo is in container #{} is now on {}".format(myContainer[1].containerID, myContainer[1].location))
+    if (myContainer[1].location == "vessel"):
+        print("status: {}".format(myContainer[0].estimated_arrival))
+    # notify("Your cargo is in container #{} is now on {}".format(myContainer.containerID, myContainer.location))
+    elif(myContainer[1].location == "port"):
+        # need to show time
+        plan1 = "6 hours later"
+        plan2 = "12 hours later"
+        plan3 = "24 hours later"
+        choice = raw_input("Please pick a time from the following to pick up your cargo: \n{}\n{}\n{} \
+                              (please use 1, 2, or 3 to indicate option)".format(plan1, plan2, plan3))
+        
