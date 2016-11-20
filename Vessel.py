@@ -1,25 +1,6 @@
-class Container:
-    def __init__(self, vesselName, shippingLine, containerID, billOfLanding, size,
-                 loadPort, unloadPort, isLocal, inlandPoint, arrivingTerminal,
-                 entryMode, exitMode, is_avaliable):
-        self.vesselName = vesselName
-        self.shippingLine = shippingLine
-        self.containerID = containerID
-        self.billOfLanding = billOfLanding
-        self.size = size
-        self.loadPort = loadPort
-        self.unloadPort = unloadPort
-        self.isLocal = isLocal
-        self.arrivingTerminal = arrivingTerminal
-        self.inlandPoint = inlandPoint
-        self.entryMode = entryMode
-        self.existMode = exitMode
-        self.avaliable = is_avaliable
-        self.location = ""
+from Contanier.py import *
 
-    def show(self):
-        print("Container #{} location: {}".format(self.containerID, self.location))
-
+"""
 class Warehouse:
     # only for trucks
     def __init__(self, name):
@@ -37,6 +18,7 @@ class Warehouse:
 
     def show(self):
         print("Warehouse #{} avaliability: {}/{}".format(self.name, len(self.containers), self.size))
+"""
 
 class Vessel:
     def __init__(self, vessel_name, outbound,  
@@ -59,11 +41,12 @@ class Vessel:
     def upload(self, current_container):
         self.containers.append(current_container)
         current_container.location = "vessel"
-        return len(current_container)
-
-    def unload(self, warehouse):
+        
+    def unload(self, warehouseid):
         for container in self.containers:
-            warehouse.upload(container)
+            container.location = ("warehouse%i" %warehouseid)   
+        self.containers = []
+        
 
     def show(self):
         print("Vessel #{} size: {}/{}".format(self.name, len(self.containers), self.size))

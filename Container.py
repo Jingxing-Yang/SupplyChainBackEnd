@@ -19,5 +19,8 @@ class Container:
 		self.availTime = availTime
 		self.entryMode = entryMode
 		self.existMode = existMode
-
-
+        self.avaliable = is_avaliable
+        self.location = ""
+        
+    def show(self):
+        print("Container #{} location: {}".format(self.containerID, self.location))
