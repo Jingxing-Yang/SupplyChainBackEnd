@@ -18,7 +18,8 @@ class Container:
         self.location = ""
 
     def show(self):
-        print("Container ")
+        print("Container #{} location: {}".format(self.containerID, self.location))
+
 class Warehouse:
     # only for trucks
     def __init__(self, name):
@@ -66,10 +67,3 @@ class Vessel:
 
     def show(self):
         print("Vessel #{} size: {}/{}".format(self.name, len(self.containers), self.size))
-
-class Port:
-    def __init__(self, name, vessel, company):
-        self.name = "Los Angeles"
-        self.vessel = vessel
-        self.company = company
-
