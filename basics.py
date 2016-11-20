@@ -17,6 +17,8 @@ class Container:
         self.avaliable = is_avaliable
         self.location = ""
 
+    def show(self):
+        print("Container ")
 class Warehouse:
     # only for trucks
     def __init__(self, name):
@@ -41,14 +43,11 @@ class Vessel:
                estimated_arrival, cutoff, estimated_departure):
         self.name = vessel_name
         self.outbound = outbound
-        if (outbound == "Outbound"):
+        if outbound:
             self.load_port = "Los Angeles"
         else:
             self.unload_port = "Los Angeles"
-        if (is_local == "Local"):
-            self.local = True
-        else:
-            self.local = False
+        self.local = is_local
         self.voyage_num = voyage_num
         self.estimated_arrival = estimated_arrival
         self.cutoff = cutoff
@@ -73,3 +72,4 @@ class Port:
         self.name = "Los Angeles"
         self.vessel = vessel
         self.company = company
+
