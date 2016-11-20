@@ -44,9 +44,9 @@ class Vessel:
         
     def unload(self, warehouseid):
         for container in self.containers:
-            container.location = ("warehouse%i" %warehouseid)   
+            container.location = ("warehouse%i" %warehouseid)
+            container.inform()
         self.containers = []
-        
 
     def show(self):
         print("Vessel #{} size: {}/{}".format(self.name, len(self.containers), self.size))

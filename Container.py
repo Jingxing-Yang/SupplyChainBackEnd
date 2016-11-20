@@ -18,5 +18,9 @@ class Container:
         self.avaliable = is_avaliable
         self.location = ""
         
+    def inform(self):
+        #read the dictionary to find the number of company to contact
+        text(find(self.containerID))
+        
     def show(self):
         print("Container #{} location: {}".format(self.containerID, self.location))
